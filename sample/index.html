@@ -1,52 +1,31 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="sampleapp">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Dave Kerr">
-    <title>CrosswordJS Sample</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="Dave Kerr" />
+    <title>Daily crossword puzzles free from The Washington Post</title>
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <!-- PT Serif webfont. -->
-    <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700i&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css?family=PT+Serif:400,700i&display=swap"
+      rel="stylesheet"
+    />
     <script src="vendor/angular/angular.js"></script>
     <script src="sampleapp.js"></script>
 
     <!-- Rock out some crosswords.js -->
-    <link href="crosswords.css" rel="stylesheet">
+    <link href="crosswords.css" rel="stylesheet" />
     <script src="crosswords.js"></script>
-    
+
     <style>
-    body {
-      font-size: 20px; /* the only pixels we will use, the rest will be in ems */
-    }
-    
-    h1 {
-      font-family: 'PT Serif', serif;
-      font-weight: 700;
-      font-style: italic;
-      font-size: 3em;
-    }
-    h2, h3, h4, h5, h6 {
-      font-family: 'PT Serif', serif;
-    }
-    p {
-      font-family: 'Helvetica Neue', 'Helvetica', 'Arial', 'Lucida Grande', sans-serif;
-    }
-    .small {
-      font-size: 0.9em;
-      color: #bebebe;
-    }
-    .selectedClue {
-      background-color: #fff7b2;
-      font-weight: bold;
-    }
-    #crossword1 {
-      max-width: 640px;
-    }
+      #crossword1 {
+        /* max-width: 640px; */
+      }
     </style>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -55,34 +34,99 @@
     <![endif]-->
   </head>
 
-  <body data-spy="scroll" data-target="#mainNav" ng-controller="MainController">
-    <div class="container">
-      <h1>Crosswords.js</h1>
-      <p>Simple, fast, framework-free crosswords for the web.</p>
-      <p>Find out more on <a href="https://github.com/dwmkerr/crosswords-js">github.com/dwmkerr/crosswords-js</a></p>
-      <hr />
-      <h3>{{info.title}} <small><em>Set by {{info.setter.title}}</em></small></h3>
-      <h4></h4>
-      <p class="small">Original source: <a href="{{info.source}}">{{info.source}}</a>.</p>
-      <hr />
-      <p ng-if="currentClue">{{currentClue.clueLabel}} {{currentClue.clue}} {{currentClue.answerStructureText}}</td>
-      <div id="crossword1"></div>
-      <table>
-        <tr>
-          <td>
-            <p><strong>Across</strong></p>
-            <div ng-repeat="clue in acrossClues" ng-click="selectClue(clue)" ng-class="{selectedClue: isHighlightedClue(clue)}">
-              <p>{{clue.clueLabel}} {{clue.clue}} {{clue.answerStructureText}}</p>
+  <body data-target="#mainNav" ng-controller="MainController">
+    <img src="/topbanner.png" alt="News from today" width="100%" />
+    <div class="col-lg-12" id="main-content">
+      <div class="sub-content">
+        <hr />
+        <h1 class="headerMargin">Daily Crossword</h1>
+        <hr />
+        <div class="blurb xx-large normal-style">
+          Welcome to Washington Post Crosswords! Click Print at the top of the
+          puzzle board to play the crossword with pen and paper. To play with a
+          friend select the icon next to the timer at the top of the puzzle. For
+          gameplay help, click on the menu button in the top left, or click
+          Settings at the top right to configure your experience. Get links to
+          all of our crossword puzzles in the list above.
+        </div>
+        <div class="cross-headline">Tuesday, May 3, 2022</div>
+        <div id="container" class="container">
+          <div class="time-bar">
+            <h5 id="timer">00:00</h5>
+            <div class="settings-div">
+              <button class="btn-link">Reveal</button>
+              <button class="btn-link">Check</button>
+              <button class="btn-link">Print</button>
+              <button class="btn-link">Settings</button>
             </div>
-          </td>
-          <td>
-            <p><strong>Down</strong></p>
-            <div ng-repeat="clue in downClues" ng-click="selectClue(clue)" ng-class="{selectedClue: isHighlightedClue(clue)}">
-              <p>{{clue.clueLabel}} {{clue.clue}} {{clue.answerStructureText}}</p>
+          </div>
+          <!-- <button id="myButton" ng-click="toggle()">Stop</button>  -->
+          <!-- <hr /> -->
+          <div
+            ng-if="currentClue"
+            class="clue-bar-text"
+            style="font-size: 20px"
+          >
+            <div>
+              <span class="CLUE-DIRECTION"
+                >{{currentClue.clueLabel.replace('.',' ')}}<span
+                  >{{currentClue.across ? 'ACROSS': 'DOWN'}}</span
+                >
+                <div class="separator">•</div>
+                {{currentClue.clue}}</span
+              >
             </div>
-          </td>
-        </tr>
-      </table>
+          </div>
+
+          <div class="flex-display">
+            <div class="block-display">
+              <div class="crosswordBox" id="crossword1"></div>
+            </div>
+            <div class="clues">
+              <table>
+                <tr class="flex-display">
+                  <td>
+                    <p class="clueHeader"><strong>Across</strong></p>
+                    <div id="clueColumnX" class="clueColumn">
+                      <div
+                        class="clue"
+                        ng-repeat="clue in acrossClues"
+                        ng-click="selectClue(clue)"
+                        ng-class="{selectedClue: isHighlightedClue(clue)}"
+                      >
+                        <div class="clueNumber">
+                          {{clue.clueLabel.replace('.',' ')}}
+                        </div>
+                        <p>{{clue.clue}}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="clueHeader"><strong>Down</strong></p>
+                    <div id="clueColumnY" class="clueColumn">
+                      <div
+                        class="clue"
+                        ng-repeat="clue in downClues"
+                        ng-click="selectClue(clue)"
+                        ng-class="{selectedClue: isHighlightedClue(clue)}"
+                      >
+                        <div class="clueNumber">
+                          {{clue.clueLabel.replace('.',' ')}}
+                        </div>
+                        <p>{{clue.clue}}</p>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 side-ad">
+        <img src="/sideAd.png" alt="News from today" />
+      </div>
     </div>
+    <img src="/bottomImagecrop.png" alt="News from today" width="100%" />
   </body>
 </html>

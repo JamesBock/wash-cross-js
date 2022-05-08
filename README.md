@@ -1,28 +1,26 @@
 # CrosswordsJS
 
-[![CircleCI](https://circleci.com/gh/dwmkerr/crosswords-js.svg?style=shield)](https://circleci.com/gh/dwmkerr/crosswords-js) [![codecov](https://codecov.io/gh/dwmkerr/crosswords-js/branch/master/graph/badge.svg)](https://codecov.io/gh/dwmkerr/crosswords-js) [![GuardRails badge](https://badges.guardrails.io/dwmkerr/crosswords-js.svg?token=569f2cc38a148f785f3a38ef0bcf5f5964995d7ca625abfad9956b14bd06ad96&provider=github)](https://dashboard.guardrails.io/default/gh/dwmkerr/crosswords-js)
+<!-- [![CircleCI](https://circleci.com/gh/dwmkerr/crosswords-js.svg?style=shield)](https://circleci.com/gh/dwmkerr/crosswords-js) [![codecov](https://codecov.io/gh/dwmkerr/crosswords-js/branch/master/graph/badge.svg)](https://codecov.io/gh/dwmkerr/crosswords-js) [![GuardRails badge](https://badges.guardrails.io/dwmkerr/crosswords-js.svg?token=569f2cc38a148f785f3a38ef0bcf5f5964995d7ca625abfad9956b14bd06ad96&provider=github)](https://dashboard.guardrails.io/default/gh/dwmkerr/crosswords-js) -->
 
-**IMPORTANT**: This is work in progress! The API may change dramatically as I work out what is most suitable.
+Fork of crossword-js
 
-Tiny, lightweight crossword for control for the web. Crossword.js is:
+Hacked together to propose to my amazing partner
 
-* Lightweight
-* Fast
-* Simple
-* Framework Free
+We do the Washington Post Crossword together on weekends (because its UI is the best)
 
-Demo: [dwmkerr.github.io/crosswords-js/](https://dwmkerr.github.io/crosswords-js/)
 
-<a href="https://dwmkerr.github.io/crosswords-js/"><img src="./docs/screenshot.png" alt="CrosswordsJS Screenshot" width="480px" /></a>
+
+<a href="https://github.com/JamesBock/wash-cross-js/"><img src="./docs/new-screenshot.png" alt="CrosswordsJS Screenshot" width="480px" /></a>
 
 <!-- vim-markdown-toc GFM -->
 
-* [Quickstart](#quickstart)
-* [Developer Guide](#developer-guide)
-* [Keyboard Functionality](#keyboard-functionality)
-* [Crossword Definition Tips](#crossword-definition-tips)
-* [Design Goals](#design-goals)
-* [TODO](#todo)
+- [CrosswordsJS](#crosswordsjs)
+  - [Quickstart](#quickstart)
+  - [Developer Guide](#developer-guide)
+  - [Keyboard Functionality](#keyboard-functionality)
+  - [Crossword Definition Tips](#crossword-definition-tips)
+  - [Design Goals](#design-goals)
+  - [TODO](#todo)
 
 <!-- vim-markdown-toc -->
 
@@ -31,7 +29,7 @@ Demo: [dwmkerr.github.io/crosswords-js/](https://dwmkerr.github.io/crosswords-js
 Install:
 
 ```sh
-npm install crosswords-js
+npm install wash-cross-js
 ```
 
 Include the JavaScript and CSS:

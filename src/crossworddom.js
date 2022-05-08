@@ -1,6 +1,34 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable linebreak-style */
 const CellMap = require('./cell-map.js');
 const { removeClass, addClass } = require('./helpers');
 
+Array.prototype.equals = function (array) {
+  // if the other array is a falsy value, return
+  if (!array)
+    return false;
+
+  // compare lengths - can save a lot of time 
+  if (this.length != array.length)
+    return false;
+
+  for (var i = 0, l = this.length; i < l; i++) {
+    // Check if we have nested arrays
+    if (this[i] instanceof Array && array[i] instanceof Array) {
+      // recurse into the nested arrays
+      if (!this[i].equals(array[i]))
+        return false;
+    }
+    else if (this[i] != array[i]) {
+      // Warning - two different object instances will never be equal: {x:20} != {x:20}
+      return false;
+    }
+  }
+  return true;
+}
+// Hide method from for-in loops
+Object.defineProperty(Array.prototype, "equals", { enumerable: false });
 //  Last element of an array.
 function last(arr) {
   return arr.length === 0 ? arr[0] : arr[arr.length - 1];
@@ -9,6 +37,7 @@ function last(arr) {
 //  Create a single global instance of a cell map.
 const cellMap = new CellMap();
 
+const highlights = [[0, 4], [1, 4], [2, 4], [3, 4], [0, 9], [1, 9], [2, 9], [3, 12], [4, 12], [5, 12], [6, 12], [7, 12], [11, 12], [12, 12]];
 function CrosswordDOM(window, crossword, parentElement) {
   const { document } = window;
   this.crossword = crossword;
@@ -23,14 +52,15 @@ function CrosswordDOM(window, crossword, parentElement) {
     const row = document.createElement('div');
     row.className = 'cwrow';
     container.appendChild(row);
-
     for (let x = 0; x < crossword.width; x++) {
       const cell = crossword.cells[x][y];
 
       //  Build the cell element and add it to the row.
       const cellElement = this._createCellDOM(document, cell);
       row.appendChild(cellElement);
-
+      if (highlights.some(a => a.equals([x, y]))) {
+        addClass(cellElement.children[0], 'highlight');
+      }
       //  Update the map of cells
       cellMap.add(cell, cellElement);
     }
@@ -60,8 +90,10 @@ function CrosswordDOM(window, crossword, parentElement) {
 //  Selects a clue.
 CrosswordDOM.prototype.selectClue = function selectClue(clue) {
   this.currentClue = clue;
+  // Object.entries(clue).map((c) => console.log(`clue ${c}`));
+  // clue.map((c) => console.log(`clue ${c}`));
   this._updateDOM();
-  cellMap.getCellElement(clue.cells[0]).focus();
+  cellMap.getCellElement(clue.cells[0]).focus({ preventScroll: true });
   this._stateChange('clueSelected');
 };
 
@@ -108,6 +140,8 @@ CrosswordDOM.prototype._createCellDOM = function _createCellDOM(document, cell) 
   //  Light cells also need an input.
   const inputElement = document.createElement('input');
   inputElement.maxLength = 1;
+  inputElement.type = 'text';
+  inputElement.autocomplete = 'new-password';
   if (cell.answer) inputElement.value = cell.answer;
   cellElement.appendChild(inputElement);
 
@@ -134,7 +168,9 @@ CrosswordDOM.prototype._createCellDOM = function _createCellDOM(document, cell) 
     acrossTerminator.className = 'cw-down-terminator';
     acrossTerminator.innerHTML = '|';
     cellElement.appendChild(acrossTerminator);
+
   }
+
 
   //  Listen for focus events.
   inputElement.addEventListener('focus', (event) => {
@@ -176,34 +212,34 @@ CrosswordDOM.prototype._createCellDOM = function _createCellDOM(document, cell) 
 
   //  Listen for keydown events.
   cellElement.addEventListener('keydown', (event) => {
+
+    const eventCell = event.target.parentNode;
+    const eventCellCell = cellMap.getCell(eventCell);
+    const { crossword } = cell;
+    const clue = self.currentClue;
+
     if (event.keyCode === 8) { // backspace
       //  Blat the contents of the cell. No need to process the backspace.
       event.preventDefault();
       event.target.value = '';
-
       //  Try and move to the previous cell of the clue.
-      var cellElement = event.target.parentNode;
-      var cell = cellMap.getCell(cellElement);
-      const currentIndex = cell.acrossClue === self.currentClue ? cell.acrossClueLetterIndex : cell.downClueLetterIndex;
+      const currentIndex = eventCellCell.acrossClue === self.currentClue ? eventCellCell.acrossClueLetterIndex : eventCellCell.downClueLetterIndex;
       const previousIndex = currentIndex - 1;
       if (previousIndex >= 0) {
-        self.currentClue.cells[previousIndex].cellElement.querySelector('input').focus();
+        self.currentClue.cells[previousIndex].cellElement.querySelector('input').focus({ preventScroll: true });
       }
 
       //  If the current index is zero, we might need to go to the previous clue
       //  segment (for a non-linear clue).
       if (currentIndex === 0 && self.currentClue.previousClueSegment) {
-        last(self.currentClue.previousClueSegment.cells).cellElement.querySelector('input').focus();
+        last(self.currentClue.previousClueSegment.cells).cellElement.querySelector('input').focus({ preventScroll: true });
+        self._updateDOM();
       }
     } else if (event.keyCode === 9) { // tab
       //  We don't want default behaviour.
       event.preventDefault();
 
       //  Get the cell element and cell data.
-      var cellElement = event.target.parentNode;
-      var cell = cellMap.getCell(cellElement);
-      var { crossword } = cell;
-      const clue = self.currentClue;
 
       //  Get the next clue.
       const searchClues = clue.across ? crossword.acrossClues : crossword.downClues;
@@ -222,9 +258,10 @@ CrosswordDOM.prototype._createCellDOM = function _createCellDOM(document, cell) 
             newClue = clue.across ? crossword.downClues[0] : crossword.acrossClues[0];
           }
           //  Select the new clue.
-          self.currentClue = newClue;
-          self._updateDOM();
-          cellMap.getCellElement(newClue.cells[0]).querySelector('input').focus();
+          this.currentClue = newClue;
+          cellMap.getCellElement(newClue.cells[0]).querySelector('input').focus({ preventScroll: true });
+          this._updateDOM();
+          self._stateChange('clueSelected');
           break;
         }
       }
@@ -233,40 +270,34 @@ CrosswordDOM.prototype._createCellDOM = function _createCellDOM(document, cell) 
       event.preventDefault();
 
       //  Get the cell element and cell data.
-      var cellElement = event.target.parentNode;
-      var cell = cellMap.getCell(cellElement);
-      var { crossword } = cell;
 
       //  If we are in a cell with an across clue AND down clue, swap the
       //  selected one.
-      if (cell.acrossClue && cell.downClue) {
-        self.currentClue = cell.acrossClue === self.currentClue ? cell.downClue : cell.acrossClue;
+      if (eventCellCell.acrossClue && eventCellCell.downClue) {
+        self.currentClue = eventCellCell.acrossClue === self.currentClue ? eventCellCell.downClue : eventCellCell.acrossClue;
         self._updateDOM();
       }
     }
-  });
-
-  //  Listen for keypress events.
-  cellElement.addEventListener('keypress', (event) => {
-    //  We've just pressed a key that generates a char. In all
-    //  cases, we're going to overwrite by blatting the current
-    //  content. If the key is space, we suppress so we don't get
-    //  a space, then we always move to the next cell in the clue.
-
+    if (event.keyCode < 65 || event.keyCode > 90) {
+      return;
+    }
+    //  Move to the next cell in the clue.
     //  No spaces in empty cells.
     if (event.keyCode === 32) {
       event.preventDefault();
     }
+    // if (event.target.parentElement.nextElementSibling.children[0]) {
+    //   console.log(`has sibling`);
+    //   const next = event.target.parentElement.nextElementSibling;
+    //   next.children[0].focus();
+    // }
 
     //  Blat current content.
-    event.target.value = '';
+    // event.target.value = '';
 
     //  Get cell data.
-    const cellElement = event.target.parentNode;
-    const cell = cellMap.getCell(cellElement);
-    const { crossword } = cell;
-    const clue = self.currentClue;
 
+    event.preventDefault();
     //  Sets the letter of a string.
     function setLetter(source, index, newLetter) {
       let sourceNormalised = source === null || source === undefined ? '' : source;
@@ -281,82 +312,193 @@ CrosswordDOM.prototype._createCellDOM = function _createCellDOM(document, cell) 
 
     //  We need to update the answer.
     const key = String.fromCharCode(event.keyCode);
-    if (cell.acrossClue) cell.acrossClue.answer = setLetter(cell.acrossClue.answer, cell.acrossClueLetterIndex, key);
-    if (cell.downClue) cell.downClue.answer = setLetter(cell.downClue.answer, cell.downClueLetterIndex, key);
-
-    //  Move to the next cell in the clue.
-    const currentIndex = cell.acrossClue === clue ? cell.acrossClueLetterIndex : cell.downClueLetterIndex;
+    event.target.value = key;
+    // if (eventCellCell.acrossClue) eventCellCell.acrossClue.answer = setLetter(eventCellCell.acrossClue.answer, eventCellCell.acrossClueLetterIndex, key);
+    // if (eventCellCell.downClue) eventCellCell.downClue.answer = setLetter(eventCellCell.downClue.answer, eventCellCell.downClueLetterIndex, key);
+    //  Move to the next eventCellCell in the clue.
+    const currentIndex = eventCellCell.acrossClue === clue ? eventCellCell.acrossClueLetterIndex : eventCellCell.downClueLetterIndex;
     const nextIndex = currentIndex + 1;
     if (nextIndex < clue.cells.length) {
-      clue.cells[nextIndex].cellElement.querySelector('input').focus();
+      clue.cells[nextIndex].cellElement.querySelector('input').focus({ preventScroll: true });
     }
 
     //  If we are at the end of the clue and we have a next segment, select it.
     if (nextIndex === clue.cells.length && clue.nextClueSegment) {
-      clue.nextClueSegment.cells[0].cellElement.querySelector('input').focus();
+      clue.nextClueSegment.cells[0].cellElement.querySelector('input').focus({ preventScroll: true });
     }
+    const inputHasValue = (activeCell) => {
+      if (activeCell.cellElement) {
+        if (activeCell.cellElement.children) {
+          if (activeCell.cellElement.children[0]) {
+
+            return (activeCell.cellElement.children[0].value !== '' && activeCell.cellElement.children[0].value !== undefined) || !activeCell.light;
+          }
+        }
+      }
+      return true;
+    }
+    console.log(`this cell has a value: ${inputHasValue(event.target.value)}`);
+    console.log(`this cell has a value: ${event.target.value}`);
+    // console.log(`this cell has activeCell.light: ${event.target.light}`);
+    //TODO:" CHECK IF ALL CELLS HAVE A LETTER IN THEM"
+    const allClues = crossword.cells.flatMap(c => c);
+    console.log(`zero cell ${allClues[0].cellElement.children[0].value}`);
+    if (allClues.every(inputHasValue)) {
+      console.log('All cells have a value');
+      self._stateChange('finished');
+      const containerElement = document.getElementById('container');
+      addClass(containerElement, 'finished');
+      document.activeElement.blur();
+      allClues.forEach((activeCell) => {
+        if (activeCell.cellElement) {
+          if (activeCell.cellElement.children) {
+            if (activeCell.cellElement.children[0]) {
+              activeCell.cellElement.children[0].disabled = true;
+            }
+          }
+        }
+      })
+      // if (highlights.some(a => a.equals([x, y]))) {
+      //   console.log('ITS TRUE');
+      //   addClass(cellElement, 'highlight');
+      // }
+    }
+    this._updateDOM();
   });
 
+  cellElement.addEventListener('dblclick', (event) => {
+    if (event.target) {
+      var cellElement = event.target.parentNode;
+      var cell = cellMap.getCell(cellElement);
+
+      if (!this.currentClue.across) {
+        this.selectClue(cell.acrossClue);
+      }
+      else {
+        this.selectClue(cell.downClue);
+      }
+    }
+  });
   //  Listen for keyup events.
   cellElement.addEventListener('keyup', (event) => {
+    // console.log(`event.key ${event.key}`);
+    // console.log(`event.code ${event.code}`);
+    var cellElement = event.target.parentNode;
+    var cell = cellMap.getCell(cellElement);
+    var { x, y } = cell;
+    var { height } = cell.crossword;
+
+
     switch (event.keyCode) {
       case 37: // left
-        var cellElement = event.target.parentNode;
-        var cell = cellMap.getCell(cellElement);
-        var { x, y } = cell;
-
-        //  If we can go left, go left.
-        if (cell.x > 0 && cell.crossword.cells[x - 1][y].light === true) {
-          //  TODO: optimise with children[0]?
-          cellMap.getCellElement(cell.crossword.cells[x - 1][y]).querySelector('input').focus();
+        if (!this.currentClue.across) {
+          this.selectClue(cell.acrossClue);
+          this._updateDOM();
+          break;
         }
+        if (cell.x > 0) {
+          for (let i = cell.x; i > 0; i--) {
+            if (cell.crossword.cells[i - 1][y].light === true) {
+              cellMap.getCellElement(cell.crossword.cells[i - 1][y]).querySelector('input').focus({ preventScroll: true });
+              this._updateDOM();
+              break;
+            }
+          }
+          //  TODO: optimise with children[0]?
+        }
+
         break;
       case 38: // up
-        var cellElement = event.target.parentNode;
-        var cell = cellMap.getCell(cellElement);
-        var { x, y } = cell;
-
+        if (this.currentClue.across) {
+          if (cell.downClue) {
+            this.selectClue(cell.downClue);
+            this._updateDOM();
+          }
+          break;
+        }
         //  If we can go up, go up.
-        if (cell.y > 0 && cell.crossword.cells[x][y - 1].light === true) {
-          //  TODO: optimise with children[0]?
-          cellMap.getCellElement(cell.crossword.cells[x][y - 1]).querySelector('input').focus();
+        if (cell.y > 0) {
+          for (let i = cell.y; i > 0; i--) {
+            if (cell.crossword.cells[x][i - 1].light === true) {
+              //  TODO: optimise with children[0]?
+              // this.selectClue(cell.downClue);
+              cellMap.getCellElement(cell.crossword.cells[x][i - 1]).querySelector('input').focus({ preventScroll: true });
+              this._updateDOM();
+              break;
+            }
+          }
         }
         break;
       case 39: // right
-        var cellElement = event.target.parentNode;
-        var cell = cellMap.getCell(cellElement);
-        var { width } = cell.crossword;
-        var { x, y } = cell;
-
-        //  If we can go right, go right.
-        if (cell.x + 1 < width && cell.crossword.cells[x + 1][y].light === true) {
-          //  TODO: optimise with children[0]?
-          cellMap.getCellElement(cell.crossword.cells[x + 1][y]).querySelector('input').focus();
+        if (!this.currentClue.across) {
+          this.selectClue(cell.acrossClue);
+          this._updateDOM();
+          break;
         }
+        if (event.target.parentElement.nextElementSibling) {
+          const next = event.target.parentElement.nextElementSibling;
+          if (next.children[0]) {
+            next.children[0].focus({ preventScroll: true });
+            this._updateDOM();
+            break;
+          }
+        }
+        if (cell.x > 0) {
+          for (let i = cell.x; i < height; i++) {
+            if (cell.crossword.cells[i + 1][y].light === true) {
+              cellMap.getCellElement(cell.crossword.cells[i + 1][y]).querySelector('input').focus({ preventScroll: true });
+              this._updateDOM();
+              break;
+            }
+          }
+          //  TODO: optimise with children[0]?
+        }
+        //  If we can go right, go right.
+        // if (cell.x + 1 < width && cell.crossword.cells[x + 1][y].light === true) {
+        //   //  TODO: optimise with children[0]?
+        //   cellMap.getCellElement(cell.crossword.cells[x + 1][y]).querySelector('input').focus();
+        // }this._updateDOM();
         break;
       case 40: // down
-        var cellElement = event.target.parentNode;
-        var cell = cellMap.getCell(cellElement);
-        var { height } = cell.crossword;
-        var { x, y } = cell;
-
+        if (this.currentClue.across) {
+          if (cell.downClue) {
+            this.selectClue(cell.downClue);
+            this._updateDOM();
+          }
+          break;
+        }
         //  If we can go down, go down.
-        if (cell.y + 1 < height && cell.crossword.cells[x][y + 1].light === true) {
+        // if (cell.y + 1 < height && cell.crossword.cells[x][y + 1].light === true) {
+        //   //  TODO: optimise with children[0]?
+        //   cellMap.getCellElement(cell.crossword.cells[x][y + 1]).querySelector('input').focus();
+        // }
+        if (cell.y < height) {
+          for (let i = cell.y; i < height; i++) {
+            if (cell.crossword.cells[x][i + 1].light === true) {
+              cellMap.getCellElement(cell.crossword.cells[x][i + 1]).querySelector('input').focus({ preventScroll: true });
+              this._updateDOM();
+              break;
+            }
+          }
           //  TODO: optimise with children[0]?
-          cellMap.getCellElement(cell.crossword.cells[x][y + 1]).querySelector('input').focus();
         }
         break;
       case 9: // tab
-        //  todo
+        //  TODO
         break;
 
       //  No action needed for any other keys.
       default:
         break;
     }
-  });
 
+  });
+  //THIS IS FOR TESTING!!!!!!!!
+  // const containerElement = document.getElementById('main-content');
+  // addClass(containerElement, 'finished');
+  // self._stateChange('finished');
   return cellElement;
+
 };
 
 //  Updates the DOM based on the model, ensuring that the CSS
@@ -369,7 +511,11 @@ CrosswordDOM.prototype._updateDOM = function _updateDOM() {
   //  Clear all clue cells.
   crossword.cells.forEach((row) => {
     row.forEach((cell) => {
-      if (cell.light) removeClass(cellMap.getCellElement(cell).querySelector('input'), 'active');
+      if (cell.light) {
+        const inputEl = cellMap.getCellElement(cell).querySelector('input');
+        removeClass(inputEl, 'active');
+        removeClass(inputEl.nextElementSibling, 'white-text');
+      }
     });
   });
 
@@ -380,9 +526,44 @@ CrosswordDOM.prototype._updateDOM = function _updateDOM() {
     : [activeClue];
   clues.forEach((clue) => {
     clue.cells.forEach((cell) => {
-      addClass(cellMap.getCellElement(cell).querySelector('input'), 'active');
+      const inputEl = cellMap.getCellElement(cell).querySelector('input');
+      addClass(inputEl, 'active');
+      if (inputEl === document.activeElement) {
+        addClass(inputEl.nextElementSibling, 'white-text');
+      }
     });
   });
+};
+let timerElement = document.getElementById("timer");
+// let buttonElement = document.getElementById("myButton");
+
+// CrosswordDOM.prototype.myTimer = function myTimer() {
+//   var current = new Date();
+//   timerElement.innerHTML = current.toLocaleTimeString();
+// };
+const startTime = Date.now();
+let startTimer = setInterval(() => {
+  const current = new Date();
+  let secondsString = '00';
+  let minutesString = '00';
+  const seconds = Math.round((current - startTime) / 1000) % 60;
+  const minutes = (Math.round(((current - startTime) / 1000) / 60)) % 60;
+  secondsString = seconds.toString().length > 1 ? seconds.toString() : `0${seconds.toString()}`;
+  minutesString = minutes.toString().length > 1 ? minutes.toString() : `0${minutes.toString()}`;
+  document.getElementById('timer').innerHTML = `${minutesString}:${secondsString}`;
+}, 1000);
+
+CrosswordDOM.prototype.toggle = function toggle() {
+  if (startTimer) {
+    clearInterval(startTimer);
+    startTimer = null;
+  } else {
+    startTimer = setInterval(() => {
+      const current = new Date();
+      timerElement.innerHTML = new Date(current.getMilliseconds() - startTime).getMintues();
+    }, 1000);
+  }
+
 };
 
 module.exports = CrosswordDOM;

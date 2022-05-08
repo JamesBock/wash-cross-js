@@ -1,15 +1,16 @@
 {
-  "name": "crosswords-js",
-  "version": "0.1.11",
-  "description": "Tiny, lightweight crosswords for HTML5/JS/CSS.",
+  "name": "wash-cross-js",
+  "version": "1.0.8",
+  "description": "Module emulating Washington Post's Crossword UI (fork of crossword-js)",
   "main": "src/index.js",
-  "dependencies": {},
+  "dependencies": {
+  },
+  "files": ["fonts", "src"],
   "devDependencies": {
     "chai": "^4.2.0",
     "connect-livereload": "^0.5.2",
     "css-loader": "^3.4.2",
     "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.20.0",
     "ignore-styles": "^5.0.1",
     "less": "^3.10.3",
@@ -20,6 +21,7 @@
     "opn": "^1.0.1",
     "standard-version": "^9.0.0",
     "style-loader": "^1.1.3",
+    "url-loader": "^4.1.1",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.0"
@@ -35,24 +37,26 @@
   "keywords": [
     "crossword"
   ],
-  "author": "Dave Kerr",
+  "author": "James Bock",
   "license": "MIT",
   "directories": {
     "doc": "docs",
     "test": "test"
+    
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dwmkerr/crosswords-js.git"
+    "url": "https://github.com/JamesBock/wash-cross-js.git"
   },
   "bugs": {
-    "url": "https://github.com/dwmkerr/crosswords-js/issues"
+    "url": "https://github.com/JamesBock/wash-cross-jss/issues"
   },
-  "homepage": "https://github.com/dwmkerr/crosswords-js#readme",
+  "homepage": "https://github.com/JamesBock/wash-cross-js#readme",
   "nyc": {
     "all": true,
     "include": [
       "src/**/*.js"
+     
     ],
     "exclude": [
       "src/**/*.specs.js"

@@ -1,13 +1,16 @@
 //  Lightweight helper functions.
 function removeClass(element, className) {
-  const expression = new RegExp(`(?:^|\\s)${className}(?!\\S)`, 'g');
-  element.className = element.className.replace(expression, '');
+  if (element !== null) {
+    const expression = new RegExp(`(?:^|\\s)${className}(?!\\S)`, 'g');
+    element.className = element.className.replace(expression, '');
+  }
 }
 
 function addClass(element, className) {
-  element.className += ` ${className}`;
+  if (element !== null) {
+    element.className += ` ${className}`;
+  }
 }
-
 module.exports = {
   removeClass,
   addClass,
