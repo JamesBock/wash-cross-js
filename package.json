@@ -1,6 +1,6 @@
 {
   "name": "wash-cross-js",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Module emulating Washington Post's Crossword UI (fork of crossword-js)",
   "main": "src/index.js",
   "dependencies": {
