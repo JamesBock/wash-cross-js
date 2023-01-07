@@ -1,0 +1,422 @@
+{
+  "info": {
+    "title": "Alberich Crosswords - Crossword 2",
+    "setter": {}
+  },
+  "width": 15,
+  "height": 15,
+  "acrossClues": [
+    {
+      "x": 1,
+      "y": 1,
+      "clue": "1. Scar's nephew (5)"
+    },
+    {
+      "x": 7,
+      "y": 1,
+      "clue": "6. Workplace oversight grp. (4)"
+    },
+    {
+      "x": 12,
+      "y": 1,
+      "clue": "11. Petals' pedestal (4)"
+    },
+    {
+      "x": 1,
+      "y": 2,
+      "clue": "15. How one might apply peanut butter (5)"
+    },
+    {
+      "x": 7,
+      "y": 2,
+      "clue": "16. Polydactyly sufferer may have extra (4)"
+    },
+    {
+      "x": 12,
+      "y": 2,
+      "clue": "17. \"Golly!\" (4)"
+    },
+    {
+      "x": 1,
+      "y": 3,
+      "clue": "18. Common ailment of backs or hips (5)"
+    },
+    {
+      "x": 7,
+      "y": 3,
+      "clue": "19. Small-batch suds (9)"
+    },
+    {
+      "x": 4,
+      "y": 4,
+      "clue": "20. Btm. fermented hoppy beer (3)"
+    },
+    {
+      "x": 8,
+      "y": 4,
+      "clue": "22. Pitcher's stat. (3)"
+    },
+    {
+      "x": 12,
+      "y": 4,
+      "clue": "23. Auditory sensor (3)"
+    },
+    {
+      "x": 1,
+      "y": 5,
+      "clue": "24. Clinton or Shatner (7)"
+    },
+    {
+      "x": 9,
+      "y": 5,
+      "clue": "28. Mexican futbol team nickname, with \"el\"  (3)"
+    },
+    {
+      "x": 13,
+      "y": 5,
+      "clue": "30. Proto diet soda (3)"
+    },
+    {
+      "x": 1,
+      "y": 6,
+      "clue": "32. Bear, to Beto (3)"
+    },
+    {
+      "x": 5,
+      "y": 6,
+      "clue": "33. Ski lift pullers (5)"
+    },
+    {
+      "x": 11,
+      "y": 6,
+      "clue": "35. 'Twilight' heronine (5)"
+    },
+    {
+      "x": 1,
+      "y": 7,
+      "clue": "37. Intrusively curious (4)"
+    },
+    {
+      "x": 6,
+      "y": 7,
+      "clue": "39. Grp. for pee pros (3)"
+    },
+    {
+      "x": 10,
+      "y": 7,
+      "clue": "40. Mixture of sugar and molasses, \"__ de cana\" (6)"
+    },
+    {
+      "x": 3,
+      "y": 8,
+      "clue": "41. Modern tech boom town (11)"
+    },
+    {
+      "x": 1,
+      "y": 9,
+      "clue": "44. Classical Salzburg prodigy (6)"
+    },
+    {
+      "x": 8,
+      "y": 9,
+      "clue": "46. LLC boss (3)"
+    },
+    {
+      "x": 12,
+      "y": 9,
+      "clue": "47. Water droplet suspension (4)"
+    },
+    {
+      "x": 1,
+      "y": 10,
+      "clue": "50. Short on life experience, perhaps (5)"
+    },
+    {
+      "x": 7,
+      "y": 10,
+      "clue": "51. Wads of tobacco (5)"
+    },
+    {
+      "x": 13,
+      "y": 10,
+      "clue": "53. Debtor's initials (3)"
+    },
+    {
+      "x": 1,
+      "y": 11,
+      "clue": "54. Lang. of facial expressions & gestures (3)"
+    },
+    {
+      "x": 5,
+      "y": 11,
+      "clue": "55. Archaic form of your (3)"
+    },
+    {
+      "x": 9,
+      "y": 11,
+      "clue": "57. Blue agave spirit (7)"
+    },
+    {
+      "x": 2,
+      "y": 12,
+      "clue": "59. Facemasks and face shields, etc.  (3)"
+    },
+    {
+      "x": 6,
+      "y": 12,
+      "clue": "61. Greek exclamation (3)"
+    },
+    {
+      "x": 10,
+      "y": 12,
+      "clue": "63. Walk, in fast motion (3)"
+    },
+    {
+      "x": 1,
+      "y": 13,
+      "clue": "64. Central German whiskey, say (9)"
+    },
+    {
+      "x": 11,
+      "y": 13,
+      "clue": "66. Single-celled organism (5)"
+    },
+    {
+      "x": 1,
+      "y": 14,
+      "clue": "70. 2012 Affleck flick (4)"
+    },
+    {
+      "x": 6,
+      "y": 14,
+      "clue": "71.Takes legal action against (4)"
+    },
+    {
+      "x": 11,
+      "y": 14,
+      "clue": "72. Japanese noodle soup (5)"
+    },
+    {
+      "x": 1,
+      "y": 15,
+      "clue": "73. MI6, in Lazenby’s Bond film (4)"
+    },
+    {
+      "x": 6,
+      "y": 15,
+      "clue": "74. ExxonMobil trademark (4)"
+    },
+    {
+      "x": 11,
+      "y": 15,
+      "clue": "75. Short paper (5)"
+    }
+  ],
+  "downClues": [
+    {
+      "x": 1,
+      "y": 1,
+      "clue": "1. Mil. draft entry service (3)"
+    },
+    {
+      "x": 2,
+      "y": 1,
+      "clue": "2. Small mischief maker (3)"
+    },
+    {
+      "x": 3,
+      "y": 1,
+      "clue": "3. \"___ culpa\" (3)"
+    },
+    {
+      "x": 4,
+      "y": 1,
+      "clue": "4. Saint or fragant herb (5)"
+    },
+    {
+      "x": 5,
+      "y": 1,
+      "clue": "5. Chasm underneath shoulder (6)"
+    },
+    {
+      "x": 7,
+      "y": 1,
+      "clue": "6. Non Rx meds. (3)"
+    },
+    {
+      "x": 8,
+      "y": 1,
+      "clue": "7. Like a well worked muscle (4)"
+    },
+    {
+      "x": 9,
+      "y": 1,
+      "clue": "9. Symbols of love (6)"
+    },
+    {
+      "x": 10,
+      "y": 1,
+      "clue": "10. \"___ as I see it\" (5)"
+    },
+    {
+      "x": 12,
+      "y": 1,
+      "clue": "11. Juice beverage with lizard mascot (4)"
+    },
+    {
+      "x": 13,
+      "y": 1,
+      "clue": "12. Third edition of aughts US rocket (11)"
+    },
+    {
+      "x": 14,
+      "y": 1,
+      "clue": "13. May birthstone (7)"
+    },
+    {
+      "x": 15,
+      "y": 1,
+      "clue": "14. Myrtle Beach flight dest. (3)"
+    },
+    {
+      "x": 6,
+      "y": 4,
+      "clue": "21. Canadian lager company (6)"
+    },
+    {
+      "x": 1,
+      "y": 5,
+      "clue": "24. Outcome for highest scoring side (3)"
+    },
+    {
+      "x": 2,
+      "y": 5,
+      "clue": "25. Prefix meaning equal (3)"
+    },
+    {
+      "x": 3,
+      "y": 5,
+      "clue": "26. \"The blue cerdos\", in Spanglish (11)"
+    },
+    {
+      "x": 7,
+      "y": 5,
+      "clue": "27. \"The Valley Isle\" (4)"
+    },
+    {
+      "x": 11,
+      "y": 5,
+      "clue": "29. Wild African goat (4)"
+    },
+    {
+      "x": 15,
+      "y": 5,
+      "clue": "31. Asian bun often with pork belly (3)"
+    },
+    {
+      "x": 8,
+      "y": 6,
+      "clue": "34. Developed land used in the raising of livestock (5)"
+    },
+    {
+      "x": 12,
+      "y": 6,
+      "clue": "36. Long-time Bronco, Jason __ (4)"
+    },
+    {
+      "x": 4,
+      "y": 7,
+      "clue": "38. Chinese currency (4)"
+    },
+    {
+      "x": 10,
+      "y": 7,
+      "clue": "40. Feline, by sound (6)"
+    },
+    {
+      "x": 5,
+      "y": 8,
+      "clue": "42. Rnk. below corporal (4)"
+    },
+    {
+      "x": 9,
+      "y": 8,
+      "clue": "43. Projection of a mammary gland (4)"
+    },
+    {
+      "x": 1,
+      "y": 9,
+      "clue": "44. Lady Marmalade collaborator, in song (3)"
+    },
+    {
+      "x": 2,
+      "y": 9,
+      "clue": "45. A fertilized egg (7)"
+    },
+    {
+      "x": 14,
+      "y": 9,
+      "clue": "48. \"Playa del __\" (3)"
+    },
+    {
+      "x": 15,
+      "y": 9,
+      "clue": "49. Miami's Tagovailoa (3)"
+    },
+    {
+      "x": 7,
+      "y": 10,
+      "clue": "51. Nation whose outline is featured on its own flag (6)"
+    },
+    {
+      "x": 11,
+      "y": 10,
+      "clue": "52. An unexciting, unadventurous, or dull person (6)"
+    },
+    {
+      "x": 6,
+      "y": 11,
+      "clue": "56. Mongol war vehicle (5)"
+    },
+    {
+      "x": 12,
+      "y": 11,
+      "clue": "58. More, to Maria (5)"
+    },
+    {
+      "x": 4,
+      "y": 12,
+      "clue": "60. Classic Texas punk music venue (4)"
+    },
+    {
+      "x": 8,
+      "y": 12,
+      "clue": "62. Votes to the affirmative (4)"
+    },
+    {
+      "x": 1,
+      "y": 13,
+      "clue": "64. Hendrix guitar sound (3)"
+    },
+    {
+      "x": 9,
+      "y": 13,
+      "clue": "65. That, to tu tio (3)"
+    },
+    {
+      "x": 13,
+      "y": 13,
+      "clue": "67. Ambulatory care abv. (3)"
+    },
+    {
+      "x": 14,
+      "y": 13,
+      "clue": "68. Golden Girl Arthur (3)"
+    },
+    {
+      "x": 15,
+      "y": 13,
+      "clue": "69. One of a plethora (3)"
+    }
+  ]
+}
